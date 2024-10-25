@@ -46,7 +46,9 @@ pipeline {
                         }
                     }
                     steps {
-                        
+                        sh '''
+                        npm install serve
+                        '''
                     }
                 }
             }
