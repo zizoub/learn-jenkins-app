@@ -3,11 +3,11 @@ pipeline {
 
     stages {
         stage('Build') {
-            agent{
+            agent {
                 docker {
                     image 'node:18-alpine'
                     reuseNode true
-                    }
+                }
             }
             steps {
                 sh '''
@@ -20,6 +20,7 @@ pipeline {
                 '''
             }
         }
+
         stage('Tests') {
             parallel {
                 stage('Unit tests') {
@@ -31,7 +32,8 @@ pipeline {
                     }
                     steps {
                         sh '''
-                        #test -f build/index.html
+                        # Ensure build output exists
+                        test -f build/index.html
                         npm test
                         '''
                     }
@@ -43,25 +45,31 @@ pipeline {
                             reuseNode true
                         }
                     }
-                    
+                    steps {
+                        sh '''
+                        # Run end-to-end tests
+                        npx playwright test
+                        '''
+                    }
                 }
             }
         }
 
-        stage('deploy') {
-            agent{
+        stage('Deploy') {
+            agent {
                 docker {
                     image 'node:18-alpine'
                     reuseNode true
-                    }
+                }
             }
             steps {
                 sh '''
-                    npm install netlify-cli -g
-                    netlify --version
+                npm install netlify-cli -g
+                netlify --version
+                # Deploy command here, for example:
+                # netlify deploy --prod
                 '''
             }
         }
     }
-    
 }
