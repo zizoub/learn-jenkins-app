@@ -60,7 +60,7 @@ pipeline {
                 node_modules/.bin/netlify status
 
                 # Deploy command here, for example:
-                # netlify deploy --prod
+                node_modules/.bin/netlify deploy --dir = build --prod
                 '''
             }
         }
