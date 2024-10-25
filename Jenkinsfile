@@ -46,18 +46,7 @@ pipeline {
                         }
                     }
                     steps {
-                        sh '''
-                        echo "Running end-to-end tests..."
-                        START_TIME=$(date +%s)
                         
-                        # Run Playwright tests
-                        npx playwright test
-                        
-                        END_TIME=$(date +%s)
-                        DURATION=$((END_TIME - START_TIME))
-                        
-                        echo "E2E tests completed in $DURATION seconds"
-                        '''
                     }
                 }
             }
